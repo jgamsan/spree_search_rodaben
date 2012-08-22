@@ -11,8 +11,9 @@ module Spree::Search
       base_scope = base_scope.by_rf(3) if tire_rf
       base_scope = base_scope.by_gr(tire_gr) if tire_gr
       base_scope = base_scope.by_season(tire_season.to_i) if tire_season
+      base_scope = base_scope.in_offert(in_offert) if in_offert
       base_scope = base_scope.on_hand unless Spree::Config[:show_zero_stock_products]
-      base_scope = base_scope.in_offert if in_offert
+
       base_scope = add_search_scopes(base_scope)
       base_scope
     end
