@@ -1,7 +1,7 @@
 Spree::Product.class_eval do
   attr_accessible :tire_speed_code_id, :tire_rf, :tire_innertube_id, :tire_width_id,
                   :tire_serial_id, :tire_gr, :tire_season
-  attr_accessible :count_on_hand, :price_in_offert
+  attr_accessible :count_on_hand, :price_in_offert, :show_in_offert
 
   delegate_belongs_to :master, :tire_width_id, :tire_rf, :tire_innertube_id,
                     :tire_speed_code_id, :tire_serial_id, :tire_gr, :tire_season, :price_in_offert
