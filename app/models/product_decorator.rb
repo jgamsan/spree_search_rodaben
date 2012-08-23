@@ -13,5 +13,5 @@ Spree::Product.class_eval do
   scope :by_speed, lambda { |speed| joins(:master).where("spree_variants.tire_speed_code_id = ?", speed)}
   scope :by_rf, lambda { |rf| joins(:master).where("spree_variants.tire_rf = ?", rf)}
   scope :by_season, lambda { |season| joins(:master).where("spree_variants.tire_season = ?", season)}
-  scope :in_offert, lambda { |offert| joins(:master).where("spree_products.show_in_offert = ?", offert)}
+  scope :in_offert, lambda { |offert| joins(:master).where(:show_in_offert =>  offert)}
 end
