@@ -1,10 +1,11 @@
 Spree::Product.class_eval do
   attr_accessible :tire_speed_code_id, :tire_rf, :tire_innertube_id, :tire_width_id,
                   :tire_serial_id, :tire_gr, :tire_season
-  attr_accessible :count_on_hand, :price_in_offert, :show_in_offert
+  attr_accessible :count_on_hand, :price_in_offert, :show_in_offert, :supplier_id
 
   delegate_belongs_to :master, :tire_width_id, :tire_rf, :tire_innertube_id,
                     :tire_speed_code_id, :tire_serial_id, :tire_gr, :tire_season, :price_in_offert
+  belongs_to :supplier
 
   scope :by_width, lambda { |width| joins(:master).where("spree_variants.tire_width_id = ?", width)}
   scope :by_serial, lambda { |serial| joins(:master).where("spree_variants.tire_serial_id = ?", serial)}
@@ -14,4 +15,5 @@ Spree::Product.class_eval do
   scope :by_rf, lambda { |rf| joins(:master).where("spree_variants.tire_rf = ?", rf)}
   scope :by_season, lambda { |season| joins(:master).where("spree_variants.tire_season = ?", season)}
   scope :in_offert, lambda { |offert| joins(:master).where(:show_in_offert =>  offert)}
+  scope :by_supplier, lambda { |supplier| joins(:master).where(:supplier_id =>  supplier)}
 end
