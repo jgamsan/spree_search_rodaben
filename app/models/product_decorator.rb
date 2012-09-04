@@ -15,4 +15,8 @@ Spree::Product.class_eval do
   scope :by_season, lambda { |season| joins(:master).where("spree_variants.tire_season = ?", season)}
   scope :in_offert, lambda { |offert| joins(:master).where(:show_in_offert =>  offert)}
   scope :by_supplier, lambda { |supplier| joins(:master).where(:supplier_id =>  supplier)}
+
+  def display_price_in_offert
+    Spree::Money.new(price_in_offert).to_s
+  end
 end
