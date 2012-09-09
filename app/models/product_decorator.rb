@@ -17,6 +17,6 @@ Spree::Product.class_eval do
   scope :by_supplier, lambda { |supplier| joins(:master).where(:supplier_id =>  supplier)}
 
   def display_price_in_offert
-    Spree::Money.new(price_in_offert).format(:symbol_position => :after).to_s
+    Spree::Money.new(price_in_offert).to_s
   end
 end
