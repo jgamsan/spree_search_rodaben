@@ -19,4 +19,17 @@ Spree::Product.class_eval do
   def display_price_in_offert
     Spree::Money.new(price_in_offert).to_s
   end
+
+  def calculate_tires(id)
+    variante = Spree::Variant.find_by_product_id(id)
+    ancho = variante.tire_width.name
+    perfil = variante.tire_serial.name
+    llanta = variante.tire_innertube.name
+    vel = variante.tire_speed_code.name
+    a = ancho.nil? ? "*" : ancho
+    p = perfil.nil? ? "*" : perfil
+    l = llanta.nil? ? "*" : llanta
+    v = vel.nil? ? "*" : vel
+    return a + "/" + p + " " + l + v
+  end
 end
