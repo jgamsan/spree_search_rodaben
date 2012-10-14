@@ -32,4 +32,9 @@ Spree::Product.class_eval do
     v = vel.nil? ? "*" : vel
     return a + "/" + p + " " + l + v
   end
+
+  def full_name(id)
+    product.name + "\n" + product.calculate_tires(id)
+  end
+
 end
