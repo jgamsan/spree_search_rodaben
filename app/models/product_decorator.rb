@@ -16,6 +16,11 @@ Spree::Product.class_eval do
   scope :in_offert, lambda { |offert| joins(:master).where(:show_in_offert =>  offert)}
   scope :by_supplier, lambda { |supplier| joins(:master).where(:supplier_id =>  supplier)}
 
+  def self.like_all(fields, values)
+      where_str = fields.map { |field| Array.new(values.size, "#{self.quoted_table_name}.#{field} #{LIKE} ?").join(' AND ') }.join(' AND ')
+      self.where([where_str, values.map { |value| "%#{value}%" } * fields.size].flatten)
+    end
+
   def display_price_in_offert
     Spree::Money.new(price_in_offert).to_s
   end

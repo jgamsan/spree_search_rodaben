@@ -36,5 +36,13 @@ module Spree::Search
 
       @properties[:in_offert] = params[:in_offert].blank? ? nil : params[:in_offert]
     end
+
+    def get_products_conditions_for(base_scope, query)
+      unless query.blank?
+        base_scope = base_scope.like_all([:name, :description], query.split)
+      end
+      base_scope
+    end
+
   end
 end
