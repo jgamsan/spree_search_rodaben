@@ -17,7 +17,7 @@ Spree::Product.class_eval do
   scope :by_supplier, lambda { |supplier| joins(:master).where(:supplier_id =>  supplier)}
 
   def self.like_all(fields, values)
-      where_str = fields.map { |field| Array.new(values.size, "#{self.quoted_table_name}.#{field} #{LIKE} ?").join(' AND ') }.join(' AND ')
+      where_str = fields.map { |field| Array.new(values.size, "#{self.quoted_table_name}.#{field} #{LIKE} ?").join(' AND ') }.join(' OR ')
       self.where([where_str, values.map { |value| "%#{value}%" } * fields.size].flatten)
     end
 
