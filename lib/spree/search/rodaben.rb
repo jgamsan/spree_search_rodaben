@@ -36,7 +36,7 @@ module Spree::Search
       @properties[:tire_season] = params[:tire_season].blank? ? nil : params[:tire_season]
 
       @properties[:in_offert] = params[:in_offert].blank? ? nil : params[:in_offert]
-      @properties[:precio] = params[:precio].blank? ? 30 : params[:precio]
+      @properties[:precio] = params[:precio].blank? ? Spree::Config[:minimum_price_to_show] : params[:precio]
     end
 
     def get_products_conditions_for(base_scope, query)
