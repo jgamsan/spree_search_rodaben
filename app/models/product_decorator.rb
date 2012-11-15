@@ -16,6 +16,7 @@ Spree::Product.class_eval do
   scope :in_offert, lambda { |offert| joins(:master).where(:show_in_offert =>  offert)}
   scope :by_supplier, lambda { |supplier| joins(:master).where(:supplier_id =>  supplier)}
   scope :by_price, lambda { |precio| joins(:master).where("spree_variants.price >= ?", precio)}
+
   def self.like_all(fields, values)
       where_str = fields.map { |field| Array.new(values.size, "#{self.quoted_table_name}.#{field} #{LIKE} ?").join(' AND ') }.join(' OR ')
       self.where([where_str, values.map { |value| "%#{value}%" } * fields.size].flatten)
