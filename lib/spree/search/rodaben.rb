@@ -12,6 +12,7 @@ module Spree::Search
       base_scope = base_scope.by_gr(tire_gr) if tire_gr
       base_scope = base_scope.by_season(tire_season.to_i) if tire_season
       base_scope = base_scope.in_offert(in_offert) if in_offert
+      base_scope = base_scope.by_price(30) if precio
       base_scope = base_scope.on_hand unless Spree::Config[:show_zero_stock_products]
 
       base_scope = add_search_scopes(base_scope)
@@ -35,6 +36,7 @@ module Spree::Search
       @properties[:tire_season] = params[:tire_season].blank? ? nil : params[:tire_season]
 
       @properties[:in_offert] = params[:in_offert].blank? ? nil : params[:in_offert]
+      @properties[:precio] = params[:precio].blank? ? nil : params[:precio]
     end
 
     def get_products_conditions_for(base_scope, query)
