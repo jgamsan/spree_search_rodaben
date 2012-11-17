@@ -26,7 +26,7 @@ Spree::Product.class_eval do
     Spree::Money.new(price_in_offert).to_s
   end
 
-  def calculate_tires(id)
+  def calculate_tires
     variante = Spree::Variant.find_by_product_id(id)
     ancho = variante.tire_width.name
     perfil = variante.tire_serial.name
