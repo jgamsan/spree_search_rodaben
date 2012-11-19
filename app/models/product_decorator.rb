@@ -28,14 +28,14 @@ Spree::Product.class_eval do
 
   def calculate_tires
     variante = Spree::Variant.find_by_product_id(id)
-    ancho = variante.tire_width.name
-    perfil = variante.tire_serial.name
-    llanta = variante.tire_innertube.name
-    vel = variante.tire_speed_code.name
-    a = ancho.nil? ? "*" : ancho
-    p = perfil.nil? ? "*" : perfil
-    l = llanta.nil? ? "*" : llanta
-    v = vel.nil? ? "*" : vel
+    ancho = variante.tire_width
+    perfil = variante.tire_serial
+    llanta = variante.tire_innertube
+    vel = variante.tire_speed_code
+    a = ancho.nil? ? "*" : ancho.name
+    p = perfil.nil? ? "*" : perfil.name
+    l = llanta.nil? ? "*" : llanta.name
+    v = vel.nil? ? "*" : vel.name
     return a + "/" + p + " " + l + v
   end
 
