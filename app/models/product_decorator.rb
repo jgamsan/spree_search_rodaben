@@ -17,6 +17,11 @@ Spree::Product.class_eval do
   scope :by_supplier, lambda { |supplier| joins(:master).where(:supplier_id =>  supplier)}
   scope :by_price, lambda { |precio| joins(:master).where("spree_variants.price >= ?", precio)}
 
+  add_search_scope :by_vehicle do |vehicle, marca|
+    products = Spree::Product.joins(:taxons).where(Spree::Taxon.table_name => {:id => marca}).map {|x| x.id}.flatten
+    joins(:taxons).where(Spree::Taxon.table_name => { :id => vehicle }, Spree::Product.table_name => {:id => })
+  end
+
   def self.like_all(fields, values)
       where_str = fields.map { |field| Array.new(values.size, "#{self.quoted_table_name}.#{field} #{LIKE} ?").join(' AND ') }.join(' OR ')
       self.where([where_str, values.map { |value| "%#{value}%" } * fields.size].flatten)
