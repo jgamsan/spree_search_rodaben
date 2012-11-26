@@ -19,7 +19,9 @@ Spree::Product.class_eval do
 
   add_search_scope :by_vehicle do |vehicle, marca|
     products = Spree::Product.joins(:taxons).where(Spree::Taxon.table_name => {:id => marca}).map {|x| x.id}.flatten
-    joins(:taxons).where{"spree_taxons" => { :id => vehicle }, "spree_products" => {:id => products}}
+    taxon = Spree::Taxon.table_name
+    producto = Spree::Product.table_name
+    joins(:taxons).where{:taxon => { :id => vehicle }, :producto => {:id => products}}
   end
 
   def self.like_all(fields, values)
