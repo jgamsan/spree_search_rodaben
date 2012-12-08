@@ -1,6 +1,6 @@
 Spree::Product.class_eval do
   attr_accessible :tire_speed_code_id, :tire_rf, :tire_innertube_id, :tire_width_id,
-                  :tire_serial_id, :tire_gr, :tire_season
+                  :tire_serial_id, :tire_gr, :tire_season, :tire_position, :tire_load_code_id
   attr_accessible :count_on_hand, :price_in_offert, :show_in_offert
 
   delegate_belongs_to :master, :tire_width_id, :tire_rf, :tire_innertube_id,
@@ -11,7 +11,9 @@ Spree::Product.class_eval do
   scope :by_innertube, lambda { |innertube| joins(:master).where("spree_variants.tire_innertube_id = ?", innertube)}
   scope :by_gr, lambda { |gr| joins(:master).where("spree_variants.tire_gr = ?", gr) }
   scope :by_speed, lambda { |speed| joins(:master).where("spree_variants.tire_speed_code_id = ?", speed)}
+  scope :by_load_code, lambda { |load_code| joins(:master).where("spree_variants.tire_load_code_id = ?", load_code)}
   scope :by_rf, lambda { |rf| joins(:master).where("spree_variants.tire_rf = ?", rf)}
+  scope :by_position, lambda { |position| joins(:master).where("spree_variants.tire_position = ?", position)}
   scope :by_season, lambda { |season| joins(:master).where("spree_variants.tire_season = ?", season)}
   scope :in_offert, lambda { |offert| joins(:master).where(:show_in_offert =>  offert)}
   scope :by_supplier, lambda { |supplier| joins(:master).where(:supplier_id =>  supplier)}
