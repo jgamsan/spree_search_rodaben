@@ -5,7 +5,7 @@ Spree::Product.class_eval do
 
   delegate_belongs_to :master, :tire_width_id, :tire_rf, :tire_innertube_id,
                     :tire_speed_code_id, :tire_serial_id, :tire_gr, :tire_season, :price_in_offert,
-                    :tire_position, :tire_load_code
+                    :tire_position, :tire_load_code_id
 
   scope :by_width, lambda { |width| joins(:master).where("spree_variants.tire_width_id = ?", width)}
   scope :by_serial, lambda { |serial| joins(:master).where("spree_variants.tire_serial_id = ?", serial)}
