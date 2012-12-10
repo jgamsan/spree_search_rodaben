@@ -8,7 +8,9 @@ module Spree::Search
       base_scope = base_scope.by_serial(tire_serial_id.to_i) if tire_serial_id
       base_scope = base_scope.by_innertube(tire_innertube_id.to_i) if tire_innertube_id
       base_scope = base_scope.by_speed(tire_speed_code_id.to_i) if tire_speed_code_id
-      base_scope = base_scope.by_rf(3) if tire_rf
+      base_scope = base_scope.by_load_code(tire_load_code_id.to_i) if tire_load_code_id
+      base_scope = base_scope.by_rf(tire_rf) if tire_rf
+      base_scope = base_scope.by_position(tire_position) if tire_position
       base_scope = base_scope.by_gr(tire_gr) if tire_gr
       base_scope = base_scope.by_season(tire_season.to_i) if tire_season
       base_scope = base_scope.in_offert(in_offert) if in_offert
@@ -32,8 +34,10 @@ module Spree::Search
       @properties[:tire_serial_id] = params[:tire_serial_id].blank? ? nil : params[:tire_serial_id]
       @properties[:tire_innertube_id] = params[:tire_innertube_id].blank? ? nil : params[:tire_innertube_id]
       @properties[:tire_speed_code_id] = params[:tire_speed_code_id].blank? ? nil : params[:tire_speed_code_id]
+      @properties[:tire_load_code_id] = params[:tire_load_code_id].blank? ? nil : params[:tire_load_code_id]
       @properties[:tire_gr] = params[:tire_gr].blank? ? nil : params[:tire_gr]
       @properties[:tire_rf] = params[:tire_rf].blank? ? nil : params[:tire_rf]
+      @properties[:tire_position] = params[:tire_position].blank? ? nil : params[:tire_position]
       @properties[:tire_season] = params[:tire_season].blank? ? nil : params[:tire_season]
 
       @properties[:in_offert] = params[:in_offert].blank? ? nil : params[:in_offert]
