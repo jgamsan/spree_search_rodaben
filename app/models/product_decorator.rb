@@ -36,11 +36,24 @@ Spree::Product.class_eval do
     perfil = variante.tire_serial
     llanta = variante.tire_innertube
     vel = variante.tire_speed_code
+    load_code = variante.tire_load_code
+    rf = variante.tire_rf
+    position = variante.tire_position
     a = ancho.nil? ? "*" : ancho.name
     p = perfil.nil? ? "*" : perfil.name
     l = llanta.nil? ? "*" : llanta.name
     v = vel.nil? ? "*" : vel.name
-    return a + "/" + p + " " + l + v
+    lo = load_code.nil? ? "*" : load_code.name
+    r = rf.nil? ? "*" : Spree::Variant::TUBE_OPTIONS[r-1][2]
+    po = position.nil? ? "*" : Spree::Variant::POSITION_OPTIONS[po-1][2]
+    if variante.product.taxons.first.permalink == "categorias/neumaticos/moto"
+      a + "/" + p + "-" + l + " " + lo + v + " " + po + " " + r    
+    else
+      a + "/" + p + " " + l + v
+    end
+    
+    
+    return 
   end
 
 end
