@@ -47,8 +47,8 @@ Spree::Product.class_eval do
     l = llanta.nil? ? "*" : llanta.name
     v = vel.nil? ? "*" : vel.name
     lo = load_code.nil? ? "*" : load_code.name
-    r = rf.nil? ? "*" : Spree::Variant::TUBE_OPTIONS[rf-1][0]
-    po = position.nil? ? "*" : Spree::Variant::POSITION_OPTIONS[position-1][2]
+    r = rf.nil? ? "*" : TUBE_OPTIONS[rf-1][0]
+    po = position.nil? ? "*" : POSITION_OPTIONS[position-1][2]
     if variante.product.taxons.first.permalink == "categorias/neumaticos/moto"
       a + "/" + p + "-" + l + " " + lo + v + " " + po + " " + r    
     else
