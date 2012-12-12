@@ -68,6 +68,6 @@ Spree::Product.class_eval do
     w = width.id
     s = serial.id
     i = innertube.id
-    true unless Spree::Product.by_width(w).by_serial(s).by_innertube(i).in_cars(["4", "5", "6", "7", "8"]).any?
+    false || Spree::Product.by_width(w).by_serial(s).by_innertube(i).in_cars(["4", "5", "6", "7", "8"]).any?
   end
 end
