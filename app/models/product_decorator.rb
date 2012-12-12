@@ -59,4 +59,14 @@ Spree::Product.class_eval do
       a + "/" + p + " " + l + v
     end
   end
+
+  self.existe_neumatico?(ancho, perfil, llanta)
+    width = Spree::TireWidth.find_by_name(ancho)
+    serial = Spree::TireSerial.find_by_name(perfil)
+    innertube = Spree::TireInnertube.find_by_name(llanta)
+    w = width.id
+    s = serial.id
+    i = innertube.id
+    true unless Spree::Product.by_width(w).by_serial(s).by_innertube(i).empty?
+  end
 end
