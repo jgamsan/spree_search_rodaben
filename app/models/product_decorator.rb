@@ -59,9 +59,4 @@ Spree::Product.class_eval do
       a + "/" + p + " " + l + v
     end
   end
-
-  def existe_neumatico?(width, serial, innertube)
-    true unless Spree::Product.by_width(width).by_serial(serial).by_innertube(innertube).empty?
-  end
-
 end
