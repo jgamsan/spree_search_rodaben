@@ -60,7 +60,7 @@ Spree::Product.class_eval do
     end
   end
 
-  self.existe_neumatico?(ancho, perfil, llanta)
+  def self.existe_neumatico?(ancho, perfil, llanta)
     width = Spree::TireWidth.find_by_name(ancho)
     serial = Spree::TireSerial.find_by_name(perfil)
     innertube = Spree::TireInnertube.find_by_name(llanta)
