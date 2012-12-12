@@ -24,6 +24,10 @@ Spree::Product.class_eval do
     joins(:taxons).where("spree_taxons.id IN (:vehiculo) AND spree_products.id IN (SELECT spree_products.id FROM spree_products INNER JOIN spree_products_taxons ON spree_products_taxons.product_id = spree_products.id INNER JOIN spree_taxons ON spree_taxons.id = spree_products_taxons.taxon_id WHERE spree_taxons.id = :brand)", {:vehiculo => vehicle.map {|x| x.to_i}, :brand => marca})
   end
 
+  add_search_scope :by_vehicle_type do |vehicle|
+    joins(:taxons).where("spree_taxons.id IN (:vehiculo)", {:vehiculo => vehicle.map {|x| x.to_i}})
+  end
+
   def self.like_all(fields, values)
       where_str = fields.map { |field| Array.new(values.size, "#{self.quoted_table_name}.#{field} #{LIKE} ?").join(' AND ') }.join(' OR ')
       self.where([where_str, values.map { |value| "%#{value}%" } * fields.size].flatten)
