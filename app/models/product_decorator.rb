@@ -19,6 +19,7 @@ Spree::Product.class_eval do
   scope :in_offert, lambda { |offert| joins(:master).where(:show_in_offert =>  offert)}
   scope :by_supplier, lambda { |supplier| joins(:master).where(:supplier_id =>  supplier)}
   scope :by_price, lambda { |precio| joins([:master => :prices]).where("spree_prices.amount >= ?", precio)}
+  scope :in_cars, lambda { |vehicle| joins(:taxons).where("spree_taxons.id IN (:vehiculo)", {:vehiculo => vehicle.map {|x| x.to_i}})} 
 
   add_search_scope :by_vehicle do |vehicle, marca|
     joins(:taxons).where("spree_taxons.id IN (:vehiculo) AND spree_products.id IN (SELECT spree_products.id FROM spree_products INNER JOIN spree_products_taxons ON spree_products_taxons.product_id = spree_products.id INNER JOIN spree_taxons ON spree_taxons.id = spree_products_taxons.taxon_id WHERE spree_taxons.id = :brand)", {:vehiculo => vehicle.map {|x| x.to_i}, :brand => marca})
@@ -67,6 +68,6 @@ Spree::Product.class_eval do
     w = width.id
     s = serial.id
     i = innertube.id
-    true unless Spree::Product.by_width(w).by_serial(s).by_innertube(i).empty?
+    true unless Spree::Product.by_width(w).by_serial(s).by_innertube(i).in_cars(["4", "5", "6", "7", "8"]).empty?
   end
 end
