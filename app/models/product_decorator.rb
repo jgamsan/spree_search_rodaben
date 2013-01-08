@@ -73,7 +73,7 @@ Spree::Product.class_eval do
     false || Spree::Product.by_width(w).by_serial(s).by_innertube(i).in_cars(["4", "5", "6", "7", "8"]).any?
   end
 
-  def self.is_moto?
+  def is_moto?
     true if self.taxons.first == 9
   end
 end
