@@ -74,6 +74,6 @@ Spree::Product.class_eval do
   end
 
   def is_moto?
-    self.taxons.last == 9 ? true : false
+    self.taxons.where(:taxonomy_id => 1).first.id == 9 ? true : false
   end
 end
