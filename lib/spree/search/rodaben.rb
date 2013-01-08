@@ -16,6 +16,7 @@ module Spree::Search
       base_scope = base_scope.in_offert(in_offert) if in_offert
       base_scope = base_scope.by_price(precio) if precio
       base_scope = base_scope.by_vehicle(vehicle, marca) if marca
+      base_scope = base_scope.by_vehicle_type(vehicle) if vehicle
       base_scope = base_scope.on_hand unless Spree::Config[:show_zero_stock_products]
 
       base_scope = add_search_scopes(base_scope)

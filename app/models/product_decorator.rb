@@ -1,11 +1,13 @@
 Spree::Product.class_eval do
   attr_accessible :tire_speed_code_id, :tire_rf, :tire_innertube_id, :tire_width_id,
-                  :tire_serial_id, :tire_gr, :tire_season, :tire_position, :tire_load_code_id, :tire_green_rate_id
-  attr_accessible :count_on_hand, :price_in_offert, :show_in_offert
+                            :tire_serial_id, :tire_gr, :tire_season, :tire_position, :tire_load_code_id
+  attr_accessible :count_on_hand, :price_in_offert, :show_in_offert, :tire_green_rate_id, :tire_fuel_consumption_id,
+                            :tire_wet_grip_id, :tire_rolling_noise_db, :tire_rolling_noise_wave
 
   delegate_belongs_to :master, :tire_width_id, :tire_rf, :tire_innertube_id,
                     :tire_speed_code_id, :tire_serial_id, :tire_gr, :tire_season, :price_in_offert,
-                    :tire_position, :tire_load_code_id, :tire_green_rate_id
+                    :tire_position, :tire_load_code_id, :tire_green_rate_id, :tire_fuel_consumption_id,
+                    :tire_wet_grip_id, :tire_rolling_noise_db, :tire_rolling_noise_wave
 
   scope :by_width, lambda { |width| joins(:master).where("spree_variants.tire_width_id = ?", width)}
   scope :by_serial, lambda { |serial| joins(:master).where("spree_variants.tire_serial_id = ?", serial)}
@@ -19,9 +21,14 @@ Spree::Product.class_eval do
   scope :in_offert, lambda { |offert| joins(:master).where(:show_in_offert =>  offert)}
   scope :by_supplier, lambda { |supplier| joins(:master).where(:supplier_id =>  supplier)}
   scope :by_price, lambda { |precio| joins([:master => :prices]).where("spree_prices.amount >= ?", precio)}
+  scope :in_cars, lambda { |vehicle| joins(:taxons).where("spree_taxons.id IN (:vehiculo)", {:vehiculo => vehicle.map {|x| x.to_i}})}
 
   add_search_scope :by_vehicle do |vehicle, marca|
     joins(:taxons).where("spree_taxons.id IN (:vehiculo) AND spree_products.id IN (SELECT spree_products.id FROM spree_products INNER JOIN spree_products_taxons ON spree_products_taxons.product_id = spree_products.id INNER JOIN spree_taxons ON spree_taxons.id = spree_products_taxons.taxon_id WHERE spree_taxons.id = :brand)", {:vehiculo => vehicle.map {|x| x.to_i}, :brand => marca})
+  end
+
+  add_search_scope :by_vehicle_type do |vehicle|
+    joins(:taxons).where("spree_taxons.id IN (:vehiculo)", {:vehiculo => vehicle.map {|x| x.to_i}})
   end
 
   def self.like_all(fields, values)
@@ -39,11 +46,34 @@ Spree::Product.class_eval do
     perfil = variante.tire_serial
     llanta = variante.tire_innertube
     vel = variante.tire_speed_code
+    load_code = variante.tire_load_code
+    rf = variante.tire_rf
+    position = variante.tire_position
     a = ancho.nil? ? "*" : ancho.name
     p = perfil.nil? ? "*" : perfil.name
     l = llanta.nil? ? "*" : llanta.name
     v = vel.nil? ? "*" : vel.name
-    return a + "/" + p + " " + l + v
+    lo = load_code.nil? ? "*" : load_code.name
+    r = rf.nil? ? "*" : TUBE_OPTIONS[rf-1][0]
+    po = position.nil? ? "*" : POSITION_OPTIONS[position-1][2]
+    if variante.product.taxons.first.permalink == "categorias/neumaticos/moto"
+      a + "/" + p + "-" + l + " " + lo + v + " " + po + " " + r
+    else
+      a + "/" + p + " " + l + v
+    end
   end
 
+  def self.existe_neumatico?(ancho, perfil, llanta)
+    width = Spree::TireWidth.find_by_name(ancho)
+    serial = Spree::TireSerial.find_by_name(perfil)
+    innertube = Spree::TireInnertube.find_by_name(llanta)
+    w = width.id
+    s = serial.id
+    i = innertube.id
+    false || Spree::Product.by_width(w).by_serial(s).by_innertube(i).in_cars(["4", "5", "6", "7", "8"]).any?
+  end
+
+  def self.is_moto?
+    true if self.taxons.first == 9
+  end
 end
