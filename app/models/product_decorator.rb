@@ -74,6 +74,6 @@ Spree::Product.class_eval do
   end
 
   def is_moto?
-    true if self.taxons.first == 9
+    self.taxons.first == 9 ? true : false
   end
 end
